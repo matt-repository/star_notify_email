@@ -20,13 +20,12 @@ func main() {
 	cc := flag.String("cc", "", "Cc person")
 	token := flag.String("token", "", "token")
 	flag.Parse()
-
-	repository := os.Getenv("GITHUB_REPOSITORY")
-	repoParts := strings.Split(repository, "/")
 	if *token == "" {
 		fmt.Println("please input token")
 		return
 	}
+	repository := os.Getenv("GITHUB_REPOSITORY")
+	repoParts := strings.Split(repository, "/")
 	user := repoParts[0]
 	repo := repoParts[1]
 	graphqlResponse := getGithubProjectInfo(*token, user, repo)
@@ -37,10 +36,10 @@ func main() {
 	content := fmt.Sprintf(`<div style="text-align: center;">   
 			<h1>%s/%s</h1>
 			<h2> 现在有 %d 个💕</h2> 
-			<img style="max-width: 100%%; border-radius: 50%%" src="cid:avatar">   
+			<img style="max-width: 100%%; border-radius: 50%%" src="%s">   
 			<div style="margin: 10px; font-size: x-large"> %s %s 给你点💕了</div>  
 			<a href="%s" style="display: block; font-size: large">%s</a></div>
-			`, user, repo, graphqlResponse.Data.Repository.StargazerCount, lastUser.Name, lastUser.Email, lastUser.URL, lastUser.URL)
+			`, user, repo, graphqlResponse.Data.Repository.StargazerCount, lastUser.AvatarURL, lastUser.Name, lastUser.Email, lastUser.URL, lastUser.URL)
 
 	m := gomail.NewMessage()
 	m.SetHeader("From", m.FormatAddress(*sendMailbox, ""))  //这个地方指定名称，会偶尔出现bug 是gomail 的bug
