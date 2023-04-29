@@ -10,3 +10,4 @@ jobs:
         run: |
           echo "Watch event type: ${{ github.event.action }}"
           echo "Sender: ${{ github.event.sender.login }}"
+          echo "{{ github.event.sender}}"
