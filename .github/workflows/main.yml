@@ -1,7 +1,7 @@
 name: Unstarred Notify
 on:
   watch:
-    types: [starred]
+    types: [started]
 jobs:
   send-email:
     runs-on: ubuntu-latest
