@@ -9,4 +9,4 @@ jobs:
       - name: Notify by email
         run: |
           echo "Watch event type: ${{ github.event.action }}"
-          echo "Sender: ${{ github.event.sender }}"
+         
