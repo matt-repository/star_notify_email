@@ -12,5 +12,5 @@ jobs:
       - name: Notify by email
         run: |
           chmod +x star_notify_email
-          ./star_notify_email -token ${{github.token}} -sendMailbox ${{secrets.MY_SEND_EMAIL}} -receiveMailbox ${{secrets.MY_EMAIL}} -password ${{secrets.MY_EMAIL_AUTHORIZATION_CODE}}
+          ./star_notify_email -token ${{github.token}} -sendMailbox ${{secrets.MY_EMAIL}} -receiveMailbox ${{secrets.MY_EMAIL}} -password ${{secrets.MY_EMAIL_AUTHORIZATION_CODE}}
          
