@@ -1,7 +1,7 @@
 name: Started Notify
 on:
   watch:
-    types: [started, starred, unstarred]
+    types: [unstarred]
 jobs:
   send-email:
     runs-on: ubuntu-latest
@@ -10,4 +10,4 @@ jobs:
         run: |
           echo "Watch event type: ${{ github.event.action }}"
           echo "Sender: ${{ github.event.sender.login }}"
-          echo "{{ github.event.sender}}"
+          echo "${{ github.event.sender}}"
