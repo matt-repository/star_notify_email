@@ -17,8 +17,6 @@ func main() {
 	sendMailbox := flag.String("sendMailbox", "", "send mailbox")
 	receiveMailbox := flag.String("receiveMailbox", "", "receive mailbox")
 	password := flag.String("password", "", "your mailbox Authorization code")
-	subject := ""
-	content := ""
 	cc := flag.String("cc", "", "Cc person")
 
 	token := os.Getenv("GITHUB_TOKEN")
@@ -28,16 +26,17 @@ func main() {
 	repo := repoParts[1]
 	graphqlResponse := getGithubProjectInfo(token, user, repo)
 	lastUser := graphqlResponse.Data.Repository.Stargazers.Edges[0].Node
-	subject = fmt.Sprintf("%s started", repository)
-	content = fmt.Sprintf(`<div style=\"text-align: center;\">\n   
-			<h1>%d 💕</h1>\n    
-			<img style=\"max-width: 100%%; border-radius: 50%%\" src=\"cid:avatar\">\n    
-			<div style=\"margin: 10px; font-size: x-large\">%s %s </div>\n    
-			<a href=\"%s\" style=\"display: block; font-size: large\">%s</a>\n</div>
-			`, graphqlResponse.Data.Repository.StargazerCount, lastUser.Name, lastUser.Email, lastUser.URL, lastUser.URL)
+	subject := fmt.Sprintf("%s started", repository)
+	content := fmt.Sprintf(`<div style="text-align: center;">   
+			<h1>%s/%s</h1>
+			<h2> 现在有 %d 个💕</h2> 
+			<img style="max-width: 100%%; border-radius: 50%%" src="cid:avatar">   
+			<div style="margin: 10px; font-size: x-large"> %s %s 给你点💕了</div>  
+			<a href="%s" style="display: block; font-size: large">%s</a></div>
+			`, user, repo, graphqlResponse.Data.Repository.StargazerCount, lastUser.Name, lastUser.Email, lastUser.URL, lastUser.URL)
 
 	m := gomail.NewMessage()
-	m.SetHeader("From", m.FormatAddress(*sendMailbox, ""))  //发送邮箱
+	m.SetHeader("From", m.FormatAddress(*sendMailbox, ""))  //这个地方指定名称，会偶尔出现bug 是gomail 的bug
 	m.SetHeader("To", m.FormatAddress(*receiveMailbox, "")) //主送
 	if *cc != "" {
 		m.SetHeader("Cc", *cc) //抄送
