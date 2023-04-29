@@ -1,0 +1,12 @@
+name: Unstarred Notify
+on:
+  watch:
+    types: [started]
+jobs:
+  send-email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify by email
+        run: |
+          echo "Watch event type: ${{ github.event.action }}"
+         
