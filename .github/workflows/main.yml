@@ -1,13 +1,12 @@
 name: Unstarred Notify
 on:
   watch:
-    types: [unstarred]
+    types: [starred]
 jobs:
   send-email:
     runs-on: ubuntu-latest
     steps:
       - name: Notify by email
-        if: ${{ github.event.action == 'unstarred' }}
         run: |
           echo "Watch event type: ${{ github.event.action }}"
-          echo "Sender: ${{ github.event.sender.login }}"
+          echo "Sender: ${{ github.event.sender }}"
