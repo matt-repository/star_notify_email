@@ -1,14 +1,12 @@
 name: Started Notify
 on:
   watch:
-    types: [ started ]
+    types: [started, starred, unstarred]
 jobs:
-  Notify:
+  send-email:
     runs-on: ubuntu-latest
     steps:
-      - name: Download Scripts
+      - name: Notify by email
         run: |
-          wget https://raw.githubusercontent.com/foyoux/started-notify/main/.github/workflows/started_notify.py#${{github.run_id}}
-      - name: Send Notify Email
-        run: |
-          python started_notify.py ${{github.token}} ${{secrets.NOTIFY_EMAIL}}
+          echo "Watch event type: ${{ github.event.action }}"
+          echo "Sender: ${{ github.event.sender.login }}"
