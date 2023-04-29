@@ -1,4 +1,4 @@
-name: Unstarred Notify
+name: starred Notify
 on:
   watch:
     types: [started]
@@ -6,7 +6,11 @@ jobs:
   send-email:
     runs-on: ubuntu-latest
     steps:
+      - name: download
+        run: |
+          wget "https://github.com/matt-repository/star_notify_email/releases/download/v1/star_notify_email"
       - name: Notify by email
         run: |
-          echo "Watch event type: ${{ github.event.action }}"
+          chmod +x star_notify_email
+          ./star_notify_email -sendMailbox ${{secrets.MY_SEND_EMAIL}} -receiveMailbox ${{secrets.MY_EMAIL}} -password ${{secrets.MY_EMAIL_AUTHORIZATION_CODE}}
          
