@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	host := flag.String("host", "smtp.163.com", "send smtp server host")
+	host := flag.String("host", "smtp.qq.com", "send smtp server host")
 	port := flag.Int("port", 465, "send smtp server port")
 	sendMailbox := flag.String("sendMailbox", "", "send mailbox")
 	receiveMailbox := flag.String("receiveMailbox", "", "receive mailbox")
