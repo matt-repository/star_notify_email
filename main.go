@@ -18,15 +18,16 @@ func main() {
 	receiveMailbox := flag.String("receiveMailbox", "", "receive mailbox")
 	password := flag.String("password", "", "your mailbox Authorization code")
 	cc := flag.String("cc", "", "Cc person")
-	token := flag.String("token", "", "token")
+	token := flag.String("token", "a", "token")
 	repository := os.Getenv("GITHUB_REPOSITORY")
 	repoParts := strings.Split(repository, "/")
-	user := repoParts[0]
-	repo := repoParts[1]
 	if *token == "" {
 		fmt.Println("please input token")
 		return
 	}
+	user := repoParts[0]
+	repo := repoParts[1]
+
 	graphqlResponse := getGithubProjectInfo(*token, user, repo)
 	lastUser := graphqlResponse.Data.Repository.Stargazers.Edges[0].Node
 	subject := fmt.Sprintf("%s started", repository)
