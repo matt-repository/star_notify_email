@@ -18,13 +18,16 @@ func main() {
 	receiveMailbox := flag.String("receiveMailbox", "", "receive mailbox")
 	password := flag.String("password", "", "your mailbox Authorization code")
 	cc := flag.String("cc", "", "Cc person")
-
-	token := os.Getenv("GITHUB_TOKEN")
+	githubToken := flag.String("github_token", "", "GITHUB_TOKEN")
 	repository := os.Getenv("GITHUB_REPOSITORY")
 	repoParts := strings.Split(repository, "/")
 	user := repoParts[0]
 	repo := repoParts[1]
-	graphqlResponse := getGithubProjectInfo(token, user, repo)
+	if *githubToken == "" {
+		fmt.Println("please input ")
+		return
+	}
+	graphqlResponse := getGithubProjectInfo(*githubToken, user, repo)
 	lastUser := graphqlResponse.Data.Repository.Stargazers.Edges[0].Node
 	subject := fmt.Sprintf("%s started", repository)
 	content := fmt.Sprintf(`<div style="text-align: center;">   
@@ -53,7 +56,7 @@ func main() {
 }
 
 // 获取此项目的一些信息，
-func getGithubProjectInfo(token, user, repo string) (graphQLResponse GraphqlResponse) {
+func getGithubProjectInfo(githubToken, user, repo string) (graphQLResponse GraphqlResponse) {
 	requestBody, err := json.Marshal(GraphqlRequest{
 		Query: fmt.Sprintf(`{
 			repository(name: "%s", owner: "%s") {
@@ -83,7 +86,7 @@ func getGithubProjectInfo(token, user, repo string) (graphQLResponse GraphqlResp
 		return
 	}
 	request.Header.Add("User-Agent", "Go")
-	request.Header.Add("Authorization", "Bearer "+token)
+	request.Header.Add("Authorization", "Bearer "+githubToken)
 	request.Header.Add("Content-Type", "application/json")
 
 	response, err := client.Do(request)
